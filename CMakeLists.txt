@@ -5,7 +5,7 @@ add_executable(conv conv.c)
 find_package(PkgConfig)
 include(CheckIncludeFileCXX)
 
-pkg_check_modules(OPENCV_PKG opencv)
+pkg_check_modules(OPENCV_PKG opencv4)
 
 string(TIMESTAMP TS)
 add_definitions(-DBUILD_TS="${TS}")

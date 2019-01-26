@@ -12,7 +12,7 @@ gen() {
     mkdir -p $dst_dir
 
     SYSNAME=`uname -s`
-    if test $SYSNAME = 'Linux'
+    if test $SYSNAME = 'Darwin'
     then
         EXE=
     else

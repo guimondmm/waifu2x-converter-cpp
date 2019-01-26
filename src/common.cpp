@@ -198,11 +198,11 @@ update_test(const char *dst_path,
 	struct stat src_st;
 	stat(src_path, &src_st);
 
-	if (src_st.st_mtim.tv_sec > dst_st.st_mtim.tv_sec) {
+   if (src_st.st_mtimespec.tv_sec > dst_st.st_mtimespec.tv_sec) {
 		return true;
 	}
 
-	if (src_st.st_mtim.tv_nsec > dst_st.st_mtim.tv_nsec) {
+   if (src_st.st_mtimespec.tv_nsec > dst_st.st_mtimespec.tv_nsec) {
 		return true;
 	}
 

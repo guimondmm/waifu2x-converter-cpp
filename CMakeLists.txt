@@ -9,6 +9,7 @@ pkg_check_modules(OPENCV_PKG opencv)
 
 string(TIMESTAMP TS)
 add_definitions(-DBUILD_TS="${TS}")
+set(CMAKE_MACOSX_RPATH 1)
 
 if (${OPENCV_PKG_FOUND})
   set(CMAKE_REQUIRED_INCLUDES ${OPENCV_PKG_INCLUDE_DIRS})
@@ -26,10 +27,10 @@ check_include_file_cxx("opencv2/opencv.hpp" HAVE_OPENCV)
 find_library(IMGCODECS_LIBRARY NAMES opencv_imgcodecs opencv_highgui
   HINTS ${OPENCV_PKG_INCLUDE_DIRS} ${OPENCV_PREFIX}/lib)
 
-if(HAVE_OPENCV)
+#if(HAVE_OPENCV)
   add_definitions(-DHAVE_OPENCV)
   set(OPENCV_LIBRARIES opencv_core opencv_imgproc ${IMGCODECS_LIBRARY} opencv_features2d)
-endif()
+#endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   # include_directories("/usr")
@@ -208,7 +209,7 @@ if(CUDA_FOUND)
 
   add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/modelHandler_CUDA.ptx20
-    COMMAND ${CUDA_NVCC_EXECUTABLE} ${CUDA_NVCC_FLAGS} -arch=sm_20 -ptx -o ${CMAKE_CURRENT_BINARY_DIR}/modelHandler_CUDA.ptx20 ${CMAKE_CURRENT_SOURCE_DIR}/src/modelHandler_CUDA.cu
+    COMMAND ${CUDA_NVCC_EXECUTABLE} ${CUDA_NVCC_FLAGS} -arch=sm_30 -ptx -o ${CMAKE_CURRENT_BINARY_DIR}/modelHandler_CUDA.ptx20 ${CMAKE_CURRENT_SOURCE_DIR}/src/modelHandler_CUDA.cu
     DEPENDS src/modelHandler_CUDA.cu
     )
   add_custom_command(
@@ -225,20 +226,20 @@ add_custom_target(gensrcs ALL
 
 enable_testing()
 
-if (${HAVE_OPENCV})
+#if (${HAVE_OPENCV})
   add_executable(waifu2x-converter-cpp
     src/main.cpp)
   target_link_libraries(waifu2x-converter-cpp LINK_PUBLIC w2xc)
-  add_executable(runtest w32-apps/runtest.c)
-  target_link_libraries(runtest w2xc)
-  add_test(runtest runtest)
+#  add_executable(runtest w32-apps/runtest.c)
+#  target_link_libraries(runtest w2xc)
+#  add_test(runtest runtest)
 
   install(TARGETS w2xc waifu2x-converter-cpp
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION "lib${LIB_SUFFIX}"
     ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
     )
-endif()
+#endif()
 
 add_executable(runbench w32-apps/runbench.c)
 target_link_libraries(runbench LINK_PUBLIC w2xc)
